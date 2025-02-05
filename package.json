@@ -1,0 +1,60 @@
+{
+  "name": "uerm-quasar-boilerplate",
+  "version": "0.0.1",
+  "description": "University of the East Ramon Magsaysay Memorial Medical Center, Inc. is a non-stock, non-profit corporation that aspires to become a bastion of quality education, service and research in the health sciences advancing health empowerment towards nation building. ",
+  "productName": "Quasar App",
+  "author": "JP Pascua <101083967+jpmpuerm@users.noreply.github.com>",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --ext .js,.vue ./",
+    "format": "prettier --write \"**/*.{js,vue,css,html,md,json}\" --ignore-path .gitignore",
+    "test": "echo \"No test specified\" && exit 0"
+  },
+  "dependencies": {
+    "@pdanpdan/vue-keyboard-trap": "^1.0.19",
+    "@quasar/extras": "^1.16.4",
+    "axios": "^0.21.1",
+    "core-js": "^3.6.5",
+    "html-to-pdfmake": "^2.4.22",
+    "i": "^0.3.7",
+    "pdfmake": "^0.2.7",
+    "socket.io-client": "^4.7.4",
+    "uerm-quasar-boilerplate": "file:",
+    "vue": "^3.3.4",
+    "vue-google-signin-button": "^1.0.4",
+    "vue-meta": "^2.4.0",
+    "vue-recaptcha-v3": "^2.0.1",
+    "vue-router": "^4.0.0",
+    "vue-step-progress": "^1.0.2",
+    "vue3-google-login": "^2.0.25",
+    "vue3-recaptcha2": "^1.8.0",
+    "vuex": "^4.0.1"
+  },
+  "devDependencies": {
+    "@babel/eslint-parser": "^7.13.14",
+    "@quasar/app-webpack": "^3.7.2",
+    "@quasar/quasar-app-extension-qpdfviewer": "^2.0.0-alpha.6",
+    "eslint": "^8.10.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-vue": "^8.5.0",
+    "eslint-webpack-plugin": "^3.1.1",
+    "prettier": "^2.5.1",
+    "sass": "^1.79.4"
+  },
+  "browserslist": [
+    "last 10 Chrome versions",
+    "last 10 Firefox versions",
+    "last 4 Edge versions",
+    "last 7 Safari versions",
+    "last 8 Android versions",
+    "last 8 ChromeAndroid versions",
+    "last 8 FirefoxAndroid versions",
+    "last 10 iOS versions",
+    "last 5 Opera versions"
+  ],
+  "engines": {
+    "node": ">= 12.22.1",
+    "npm": ">= 6.13.4",
+    "yarn": ">= 1.21.1"
+  }
+}

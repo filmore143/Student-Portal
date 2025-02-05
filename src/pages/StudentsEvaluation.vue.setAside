@@ -1,0 +1,118 @@
+<template>
+  <div class="q-pa-md example-row-equal-width">
+    <div class="text-h4 text-weight-bold q-px-lg q-py-lg text-primary">
+      <!-- COURSE EVALUATION {{ this.studentInfo }} -->
+      <!-- COURSE EVALUATION {{ this.evaluationTemplates }} -->
+      COURSE EVALUATION
+    </div>
+  </div>
+
+  <!---TRY KO MUNA DITO-->
+  <q-page class="full-height flex flex-center q-pa-md">
+    <div
+      class="row q-col-gutter-xs justify-center items-center full-width full-height"
+    >
+      <div class="col-lg-10 col-md-12 col-sm-12 col-xs-11 full-height">
+        <q-card>
+          <q-card-section
+            class="full-height bg-primary text-white"
+            v-if="!this.bools.loading"
+          >
+            <div
+              class="row justify-center items-center col-9 text-weight-bold text-h4"
+            >
+              EVALUATION FORM
+            </div>
+          </q-card-section>
+          <q-card-section class="full-height" v-if="!this.bools.loading">
+            <!-- <q-scroll-area style="height: 80vh" visible class="q-pr-md"> -->
+            <Evaluation
+              :studentInfo="this.studentInfo"
+              :currentTemplate="this.currentTemplate"
+              :currentHashmapTemplate="this.currentHashmapTemplate"
+            ></Evaluation>
+            <!-- </q-scroll-area> -->
+          </q-card-section>
+          <q-card-section style="height: 30vh" v-if="this.bools.loading">
+          </q-card-section>
+          <q-inner-loading :showing="this.bools.loading">
+            <q-card-section align="center">
+              <q-spinner-hourglass size="150px" color="primary" />
+              <div class="text-overline q-pt-md"></div>
+            </q-card-section>
+          </q-inner-loading>
+        </q-card>
+      </div>
+    </div>
+  </q-page>
+</template>
+
+<script>
+import Evaluation from "src/components/EvaluationForm.vue.setAside";
+import { defineComponent } from "vue";
+import { mapGetters } from "vuex";
+export default defineComponent({
+  components: {
+    Evaluation,
+  }, //END OF COMPONENTS LIFE CYCLE HOOKS
+  name: "StudentsEvaluation",
+  data() {
+    return {
+      bools: {
+        loading: true,
+        enableSubmit: false,
+      },
+      evaluationDataTemplate: [],
+    };
+  }, //END OF DATA LIFE CYCLE HOOKS
+  computed: {
+    ...mapGetters({
+      studentInfo: "users/userAccount",
+      evaluationTemplates: "evaluation/getEvaluationTemplate",
+      currentTemplate: "evaluation/currentTemplate",
+      currentHashmapTemplate: "evaluation/currentHashmapTemplate",
+    }),
+  }, //END OF COMPUTED LIFE CYCLE HOOKS
+  created() {
+    this.displayQuestion();
+    this.initiateStores();
+  }, //END OF CREATED LIFE CYCLE HOOKS
+  methods: {
+    async displayQuestion() {
+      this.bools.loading = true;
+      var filterTemplate = this.evaluationTemplates.filter(
+        (filterTemplate) =>
+          filterTemplate.courseCode === this.evaluationTemplates[0].courseCode
+      );
+
+      if (filterTemplate) {
+        await this.$store.dispatch(
+          "evaluation/setCurrentTemplate",
+          filterTemplate
+        );
+      }
+
+      //   if (filterTemplate) {
+      //     await this.$store.dispatch(
+      //       "evaluations/setCurrentTemplate",
+      //       filterTemplate
+      //     );
+      //   }
+
+      setTimeout(() => {
+        this.bools.loading = false;
+      }, 1500);
+    },
+
+    async initiateStores() {
+      this.evaluationDataTemplate = await this.$store.dispatch(
+        "evaluation/getEvaluationTemplate"
+      );
+
+
+    },
+  }, //END OF METHODS LIFE CYCLE HOOKS
+});
+</script>
+
+<style lang="scss" scoped></style>

@@ -1,0 +1,125 @@
+<template>
+  <q-item
+    clickable
+    tag="a"
+    @click="redirectRoute({ name: title, icon: icon, link: link })"
+    v-if="children.length === 0"
+    :class="
+      this.activeRoute(link, { name: title, icon: icon, link: link })
+        ? 'text-black bg-yellow-8 text-weight-bold'
+        : 'text-white bg-blue-grey-9'
+    "
+  >
+    <q-item-section v-if="icon" avatar>
+      <q-icon :name="icon" />
+    </q-item-section>
+
+    <q-item-section>
+      <q-item-label>{{ title }}</q-item-label>
+    </q-item-section>
+  </q-item>
+  <q-list v-else bordered dark separator>
+    <q-expansion-item
+      :icon="icon"
+      :label="title"
+      header-class="text-white bg-blue-grey-9"
+      expand-icon-class="text-white"
+      bordered
+      group="accordion"
+    >
+      <div v-for="child in children" :key="child">
+        <q-item
+          v-if="child.title !== 'CLEARANCE' || isGraduating"
+          clickable
+          tag="a"
+          @click="
+            redirectRoute({
+              name: child.title,
+              icon: child.icon,
+              link: child.link,
+            })
+          "
+          :class="
+            this.activeRoute(child.link, {
+              name: child.title,
+              icon: child.icon,
+              link: child.link,
+            })
+              ? 'text-black bg-yellow-8 text-weight-bold'
+              : 'text-white bg-blue-grey-9'
+          "
+        >
+          <q-item-section v-if="child.icon" avatar class="q-ml-md">
+            <q-icon :name="child.icon" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ child.title }}</q-item-label>
+          </q-item-section>
+        </q-item>
+      </div>
+    </q-expansion-item>
+  </q-list>
+</template>
+
+<script>
+import { defineComponent } from "vue";
+
+export default defineComponent({
+  name: "EssentialLink",
+  data() {
+    return {
+      isGraduating: false,
+    };
+  },
+  props: {
+    title: {
+      type: String,
+      required: true,
+    },
+
+    caption: {
+      type: String,
+      default: "",
+    },
+
+    link: {
+      type: String,
+      default: "#",
+    },
+
+    icon: {
+      type: String,
+      default: "",
+    },
+
+    children: {
+      type: Array,
+    },
+  },
+  emit: ["setCurrentRoute"],
+  created() {
+    this.verifyIfGraduating();
+  },
+  methods: {
+    activeRoute(route, routeDetails) {
+      if (this.$route.fullPath === route) {
+        this.$emit("setCurrentRoute", routeDetails);
+        return true;
+      }
+      return false;
+    },
+    redirectRoute(route) {
+      this.$router.push(route.link);
+    }, //end of redirect route
+    async verifyIfGraduating() {
+      const response = await this.$store.dispatch(
+        "clearance/verifyIfGraduating"
+      );
+
+      if (response[0].name) {
+        this.isGraduating = true;
+      }
+    },
+  },
+});
+</script>
